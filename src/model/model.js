@@ -1,6 +1,6 @@
-import Chain from './Chain'
+import Chain from '../utils/Chain'
 
-class model{
+export default class model{
     constructor() {
         this.zone = []
         this.snake = new Chain()
@@ -10,7 +10,7 @@ class model{
             this.updateZone(index, 'snake')
         }
         this.snake.pop = () => {
-            pop.call(this.snake)
+            let index = pop.call(this.snake)
             this.updateZone(index, undefined)
         }
         this.snake.toString = () => {
@@ -18,7 +18,7 @@ class model{
         }
     }
 
-    init(config) {
+    init(config = {}) {
         this.zone.length = config.row * config.column
         for (let i = 0, len = this.zone.length; i < len; i++) {
             let [col, row] = [i % config.column, (i / config.row) >> 0]
@@ -28,7 +28,7 @@ class model{
                 left: col > 0 ? i - 1 : -1,
                 right: col < config.column - 1 ? i + 1 : -1,
                 up: row > 0 ? i - config.column : -1,
-                down: row < config.row ? i + config.column : -1
+                down: row < config.row - 1 ? i + config.column : -1
             }
         }
         for (let i = 0, len = config.min; i < len; i++) {
@@ -47,7 +47,12 @@ class model{
             this.head.down
         ]
         around = around.filter((index) => {
-            return index !== -1 && this.zone[index].fill === undefined
+            if (index !== -1) {
+                if (this.zone[index].fill === undefined) {
+                    return true
+                }
+            }
+            return false
         })
         return around[(Math.random() * around.length)>>0]
     }
@@ -64,8 +69,8 @@ class model{
     }
 
     bet() {
-        let random = Math.random * this.zone.length >> 0
-       return this.zone[random] === 0 ? random : -1
+        let random = Math.random () * this.zone.length >> 0
+        return this.zone[random].fill === undefined ? random : -1
     }
 
     feed() {
@@ -74,17 +79,19 @@ class model{
             let len = this.zone.length - this.snake.length
             let count = 0
             let index = 0
-            let random = Math.random() * len >> 0 + 1
+            let random = (Math.random() * len >> 0)+ 1
             while (count !== random) {
-                this.zone[index++] === 0 && count++
+                this.zone[index++].fill === undefined && count++
             }
             this.food = index - 1
         }
         this.updateZone(this.food, 'food')
+        console.log(this.food)
     }
 
     move (next) {
-        this.snake.unshift(next) && this.snake.pop()
+        this.snake.unshift(next)
+        this.snake.pop()
     }
     
     eat (next) {
@@ -109,5 +116,3 @@ class model{
         }
     }
 }
-
-export default model

@@ -12,10 +12,20 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
-      title: 'Output Management'
+      title: 'Greedy Snake'
     })
   ],
   devServer: {
     contentBase: './dist'
+  },
+  module: {
+    loaders: [{
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader',
+        query: {
+          presets: ['es2015']
+        }
+    }]
   }
 };

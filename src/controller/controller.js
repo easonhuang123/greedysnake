@@ -10,34 +10,30 @@ export default class Controller {
     init(config) {
         this.model.init(config)
         this.config = config
-        let data = {
+        this.data = {
             data: {
-                snake: this.model.snake.chain,
-                food: this.model.food
+                snake: this.model.snake,
+                food: this.model.food,
+                zone: this.model.zone
             }
         }
-        let cfg = Object.assign(config, data)
+        let cfg = Object.assign(config, this.data)
         this.view.init(cfg)
-        setInterval(() => {
-            this.model.go(this.model.snake.head - 1)
-            this.model.snake.toString()
-        }, 2000)
     }
 
     start() {
+        let { head, zone } = this.model
+        let direction = 'random'
+        if (direction === 'random') {
+            this.around = ['left', 'right', 'up', 'down']
+            this.around = this.around.filter((item) => {
+                return head[item] !== -1 && zone[head[item]].fill === undefined
+            })
+            direction = this.around[(Math.random() * this.around.length)>>0]
+        }
         setInterval(() => {
-            let next = this.model.snake.chain[this.model.snake.head].next
-            switch (next) {
-                case this.model.snake.head + 1: this.model.go(this.model.snake.head - 1)
-                    break
-                case this.model.snake.head - 1: this.model.go(this.model.snake.head + 1)
-                    break
-                case this.model.snake.head + this.config: this.model.go(this.model.snake.head - this.config)
-                    break   
-                case this.model.snake.head - this.config: this.model.go(this.model.snake.head + this.config)
-                    break 
-            }
-            this.model.snake.toString()
-        }, 50)
+            this.model.go(this.model.head[direction])
+            this.view.update(this.data.data)
+        },1000)            
     }
 }

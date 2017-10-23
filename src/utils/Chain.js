@@ -89,7 +89,7 @@ export default class Chain {
         this.tail = this.chain[this.tail].prev
         this.tail !== -1 && (this.chain[this.tail].next = -1)
         --this.length === 0 && (this.head = -1)
-        return this.chain[this.free].element
+        return this.chain[this.free]
     }
 
     calloc() {

@@ -36,7 +36,6 @@ export default class View {
         for (let { element } of this.config.data.snake) {
             this.snake.push(element)
         }
-        
     }
 
     drawBound() {
@@ -48,8 +47,8 @@ export default class View {
         this.stage.addChild(bound)
     }
 
-    feed() {
-        this.drawPoint(this.config.data.food, this.config.food)
+    feed(food) {
+        this.drawPoint(food, this.config.food)
     }
 
     drawPoint(index, color) {
@@ -70,4 +69,60 @@ export default class View {
         let y = Math.floor(index / this.config.row)
         return { x: x, y: y}
     }
+
+    update(data) {
+        this.food !== data.food && this.feed(data.food)
+        this.updateSnake(data.snake)
+    }
+
+    
+    updateSnake(snakeM, snakeV = this.snake) { 
+		this.updateTail(snakeM, snakeV)
+			.then(() => this.updateHead(snakeM, snakeV))
+			.catch(() => this.wholeUpdate(snakeM, snakeV))
+            .then(() => this.render())
+	}
+
+	updateHead(snakeM, snakeV) { 
+		return new Promise(
+            (resolve, reject) => {
+                while (snakeV.length <= snakeM.length) {
+					if(snakeM.chain[snakeM.head].element === snakeV.chain[snakeV.head].element) {
+                        return resolve(); 
+					}
+                    else { 
+                        snakeV.unshift(snakeM.chain[snakeM.head].element)
+					}
+				}
+			}
+		); 
+	}
+
+    updateTail(snakeM, snakeV) {
+		return new Promise(
+            (resolve, reject) => {
+				let tailM = snakeM.tail, tailV
+				while(snakeV.length !== 0) { 
+					tailV = snakeV.tail
+                    if (snakeM.chain[tailM].element === snakeV.chain[tailV].element) {
+						return resolve()
+					}
+					else {
+						snakeV.pop()
+					}
+				}
+				reject()
+			}
+		); 
+	}
+
+	// 全量更新
+	wholeUpdate(snakeA, snakeB) { 
+		console.log("badbadbad"); 
+	}
+
+	// 渲染 
+	render() {
+		this.app.render(this.stage)
+	}
 }

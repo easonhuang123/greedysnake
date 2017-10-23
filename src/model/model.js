@@ -4,14 +4,18 @@ export default class model{
     constructor() {
         this.zone = []
         this.snake = new Chain()
-        let { unshift, pop, toString } = this.snake
+        let { unshift, pop, push, toString } = this.snake
         this.snake.unshift = (index) => {
             unshift.call(this.snake, index)
             this.updateZone(index, 'snake')
         }
         this.snake.pop = () => {
-            let index = pop.call(this.snake)
+            let index = pop.call(this.snake).element
             this.updateZone(index, undefined)
+        }
+        this.snake.push = (index) => {
+            push.call(this.snake, index)
+            this.updateZone(index, 'snake')
         }
         this.snake.toString = () => {
             toString.call(this.snake)
@@ -31,11 +35,11 @@ export default class model{
                 down: row < config.row - 1 ? i + config.column : -1
             }
         }
-        for (let i = 0, len = config.min; i < len; i++) {
+        while (this.snake.length < config.min) {
             let index = this.snake.length ? this.neighbour() : (Math.random() * this.zone.length) >> 0
             this.snake.unshift(index)
         }
-        this.snake.toString()
+        // this.snake.toString()
         this.feed()
     }
 
@@ -86,7 +90,6 @@ export default class model{
             this.food = index - 1
         }
         this.updateZone(this.food, 'food')
-        console.log(this.food)
     }
 
     move (next) {
@@ -106,10 +109,10 @@ export default class model{
                 this.eat(next)
                 break
             case 'snake':
-                console.log('u die')
+                console.log('u die snake')
                 break
             case 'bound':
-                console.log('u die')
+                console.log('u die bound')
                 break
             default:
                 this.move(next)

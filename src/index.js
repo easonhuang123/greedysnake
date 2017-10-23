@@ -3,8 +3,8 @@ import Controller from './controller/controller'
 let config = {
     width: 500,
     height: 500,
-    column: 10,
-    row: 10,
+    column: 20,
+    row: 20,
     min: 8,
     color: 0xFFC3DC,
     bound: 0xFF66A5,
@@ -13,3 +13,4 @@ let config = {
 
 let controller = new Controller()
 controller.init(config)
+controller.start()

@@ -23,17 +23,21 @@ export default class Controller {
 
     start() {
         let { head, zone } = this.model
-        let direction = 'random'
-        if (direction === 'random') {
+        this.direction = 'random'
+        if (this.direction === 'random') {
             this.around = ['left', 'right', 'up', 'down']
             this.around = this.around.filter((item) => {
                 return head[item] !== -1 && zone[head[item]].fill === undefined
             })
-            direction = this.around[(Math.random() * this.around.length)>>0]
+            this.direction = this.around[(Math.random() * this.around.length)>>0]
         }
         setInterval(() => {
-            this.model.go(this.model.head[direction])
+            this.model.go(this.model.head[this.direction])
             this.view.update(this.data.data)
         },1000)            
+    }
+
+    turn(direction) {
+        this.direction = direction
     }
 }

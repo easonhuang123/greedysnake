@@ -3,7 +3,7 @@ import Chain from '../utils/Chain'
 
 export default class View {
     constructor() {
-        this.app = PIXI.autoDetectRenderer(700, 700, 
+        this.app = PIXI.autoDetectRenderer(550, 550, 
             { 
 				transparent: true
 			}
@@ -19,9 +19,10 @@ export default class View {
             this.drawPoint(index, this.config.color)
         }
         this.snake.pop = () => {
-            pop.call(this.snake)
+            this.stage.removeChild(pop.call(this.snake).element)
         }
-        document.body.appendChild(this.app.view)
+        let node = document.getElementById('snake-game')
+        node.appendChild(this.app.view)
     }
 
     init(config = {}) {
@@ -93,7 +94,8 @@ export default class View {
                     else { 
                         snakeV.unshift(snakeM.chain[snakeM.head].element)
 					}
-				}
+                }
+                reject()
 			}
 		); 
 	}
@@ -101,14 +103,12 @@ export default class View {
     updateTail(snakeM, snakeV) {
 		return new Promise(
             (resolve, reject) => {
-				let tailM = snakeM.tail, tailV
-				while(snakeV.length !== 0) { 
-					tailV = snakeV.tail
-                    if (snakeM.chain[tailM].element === snakeV.chain[tailV].element) {
+				while(snakeV.length !== 0) {
+                    if (snakeM.chain[snakeM.tail].element === snakeV.chain[snakeV.tail].element) {
 						return resolve()
 					}
-					else {
-						snakeV.pop()
+                    else {
+                        snakeV.pop()
 					}
 				}
 				reject()

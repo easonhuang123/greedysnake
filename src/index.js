@@ -1,5 +1,5 @@
 import Controller from './controller/controller'
-
+import './style/style.css'
 let config = {
     width: 500,
     height: 500,
@@ -14,3 +14,18 @@ let config = {
 let controller = new Controller()
 controller.init(config)
 controller.start()
+
+document.querySelector('.snake-up').addEventListener("click", () => {
+    controller.turn('up')
+})
+document.querySelector('.snake-right').addEventListener("click", () => {
+    controller.turn('right')
+})
+document.querySelector('.snake-down').addEventListener("click", () => {
+    controller.turn('down')
+})
+document.querySelector('.snake-left').addEventListener("click", () => {
+    controller.turn('left')
+})
+
+

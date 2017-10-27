@@ -12,15 +12,18 @@ export default class View {
         let { unshift, pop, push } = this.snake
         this.snake.unshift = (index) => {
             unshift.call(this.snake, index)
-            this.drawPoint(index, this.config.color)
+            let node = this.snake.chain[this.snake.head].node = this.drawPoint(this.config.color)
+            this.setPosition(node, index)
         }
         this.snake.push = (index) => {
             push.call(this.snake, index)
-            this.drawPoint(index, this.config.color)
+            let node = this.snake.chain[this.snake.tail].node = this.drawPoint(this.config.color)
+            this.setPosition(node, index)
         }
         this.snake.pop = () => {
-            this.stage.removeChild(pop.call(this.snake).element)
+            this.collect(pop.call(this.snake).node)
         }
+        this.colletion = []
         let node = document.getElementById('snake-game')
         node.appendChild(this.app.view)
     }
@@ -33,7 +36,8 @@ export default class View {
             height: config.height / config.row
         }
         this.drawBound()
-        this.feed()
+        this.food = this.drawPoint()
+        this.food.graphicsData[0].fillColor = this.config.food
         for (let { element } of this.config.data.snake) {
             this.snake.push(element)
         }
@@ -44,31 +48,43 @@ export default class View {
             .beginFill(0xffffff, 1)
             .lineStyle(8, this.config.bound, 1)
             .drawRect(0, 0, this.config.width + 8, this.config.height + 8)
+            .endFill()
         bound.x = bound.y = (this.app.view.width - bound.cwidth) / 2
         this.stage.addChild(bound)
     }
 
     feed(food) {
-        this.drawPoint(food, this.config.food)
+        this.setPosition(this.food, food)
     }
 
-    drawPoint(index, color) {
-        let node = new PIXI.Graphics()
-        let { width, height } = this.config.size
-        let { x, y } = this.getPosition(index)
-        node.beginFill(color)
-        node.drawRect(0, 0, width, height)
-        node.endFill()
-        node.x = x * width
-        node.y = y * height
+    drawPoint(color = this.config.color) {
+        let node
+        if (this.colletion = []) {
+            node = new PIXI.Graphics()
+            let { width, height } = this.config.size
+            node.beginFill(color)
+            node.drawRect(0, 0, width, height)
+            node.endFill()
+            node.x = 0
+            node.y = 0
+        } else {
+            node = this.colletion.pop()
+        }
         this.stage.addChild(node)
-        this.app.render(this.stage)
+        return node
     }
 
-    getPosition(index) {
+    setPosition(node, index) {
         let x = index % this.config.column
         let y = Math.floor(index / this.config.row)
-        return { x: x, y: y}
+        let { width, height } = this.config.size
+        node.x = x * width
+        node.y = y * height
+    }
+
+    collect(node) {
+        this.colletion.push(node)
+        this.stage.removeChild(node)
     }
 
     update(data) {

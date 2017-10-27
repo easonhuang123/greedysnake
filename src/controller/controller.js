@@ -10,15 +10,17 @@ export default class Controller {
     init(config) {
         this.model.init(config)
         this.config = config
-        this.data = {
+        let data = {
             data: {
                 snake: this.model.snake,
                 food: this.model.food,
                 zone: this.model.zone
             }
         }
-        let cfg = Object.assign(config, this.data)
+        let cfg = Object.assign(config, data)
         this.view.init(cfg)
+        this.food = this.model.food
+        this.update()
     }
 
     start() {
@@ -33,8 +35,17 @@ export default class Controller {
         }
         setInterval(() => {
             this.model.go(this.model.head[this.direction])
-            this.view.update(this.data.data)
-        },1000)            
+            this.update()
+        },700)            
+    }
+
+    update() {
+        let data = {
+            snake: this.model.snake,
+            food: this.model.food,
+            zone: this.model.zone
+        }
+        this.view.update(data)
     }
 
     turn(direction) {

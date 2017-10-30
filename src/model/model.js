@@ -41,6 +41,7 @@ export default class model{
         }
         // this.snake.toString()
         this.feed()
+        this.score = 0
     }
 
     neighbour () {
@@ -97,7 +98,8 @@ export default class model{
         this.snake.pop()
     }
     
-    eat (next) {
+    eat(next) {
+        this.score++
         this.snake.unshift(next)
         this.feed()
     }
@@ -109,13 +111,18 @@ export default class model{
                 this.eat(next)
                 break
             case 'snake':
-                console.log('u die snake')
+                this.collision('你自己')
                 break
             case 'bound':
-                console.log('u die bound')
+                this.collision('墙')
                 break
             default:
                 this.move(next)
         }
+    }
+
+    collision(mark) {
+        this.mark = mark
+        alert('你死了因为你撞到了' + this.mark + ',你的得分是' + this.score)
     }
 }

@@ -14,6 +14,8 @@ let config = {
 let controller = new Controller()
 controller.init(config)
 
+controller.start()
+
 document.querySelector('.snake-up').addEventListener("click", () => {
     controller.turn('up')
 })
@@ -27,7 +29,10 @@ document.querySelector('.snake-left').addEventListener("click", () => {
     controller.turn('left')
 })
 document.querySelector('.snake-trigger').addEventListener("click", () => {
-    controller.start()
+    controller.trigger()
+})
+document.querySelector('.snake-start').addEventListener("click", () => {
+    controller.restart()
 })
 
 

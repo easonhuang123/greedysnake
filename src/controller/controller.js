@@ -21,22 +21,35 @@ export default class Controller {
         this.view.init(cfg)
         this.food = this.model.food
         this.update()
+        this.TURNON = true
+        this.GAMEOVER = false
     }
 
     start() {
         let { head, zone } = this.model
-        this.direction = 'random'
-        if (this.direction === 'random') {
+        if (this.direction === undefined) {
             this.around = ['left', 'right', 'up', 'down']
             this.around = this.around.filter((item) => {
                 return head[item] !== -1 && zone[head[item]].fill === undefined
             })
             this.direction = this.around[(Math.random() * this.around.length)>>0]
         }
-        setInterval(() => {
-            this.model.go(this.model.head[this.direction])
-            this.update()
-        },700)            
+        this.update()
+    }
+
+    trigger() {
+        if (this.GAMEOVER) {
+            return
+        }
+        let interval = setInterval(() => {
+            if (this.TURNON) {
+                clearInterval(interval)
+            } else {
+                this.model.go(this.model.head[this.direction])
+                this.update() 
+            }
+        }, 200)
+        this.TURNON = !this.TURNON
     }
 
     update() {
@@ -46,9 +59,28 @@ export default class Controller {
             zone: this.model.zone
         }
         this.view.update(data)
+        if (this.model.mark !== undefined) {
+            this.GAMEOVER = true
+            this.TURNON = true
+        }
     }
 
     turn(direction) {
-        this.direction = direction
+        let opposite = {
+            'left': 'right',
+            'right': 'left',
+            'up': 'down',
+            'down': 'up'
+        }
+        if (opposite[direction] !== this.direction) {
+            this.direction = direction
+        }
+    }
+
+    restart() {
+        this.init(this.config)
+        this.start()
+        this.TURNON = false
+        this.trigger()
     }
 }

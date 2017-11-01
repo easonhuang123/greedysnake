@@ -77,10 +77,17 @@ export default class Controller {
         }
     }
 
+    destory() {
+        this.model.destory()
+        this.view.destory()
+    }
+
     restart() {
+        this.destory()
         this.init(this.config)
         this.start()
         this.TURNON = false
+        console.log(this.GAMEOVER)
         this.trigger()
     }
 }

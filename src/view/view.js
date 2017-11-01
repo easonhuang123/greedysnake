@@ -140,5 +140,12 @@ export default class View {
 	// 渲染 
 	render() {
 		this.app.render(this.stage)
-	}
+    }
+    
+
+    destory() {
+        for (let i = 0, len = this.snake.length; i < len; i++) {
+            this.snake.pop()
+        }
+    }
 }

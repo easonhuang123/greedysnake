@@ -44,6 +44,16 @@ export default class model{
         this.score = 0
     }
 
+    destory() {
+        for (let i = 0, len = this.snake.length; i < len; i++) {
+            this.snake.pop()
+        }
+        this.mark = undefined
+        this.score = 0
+        let score = document.getElementById('score')
+        score.innerHTML = this.score
+    }
+
     neighbour () {
         let around = [
             this.head.left,
@@ -100,6 +110,8 @@ export default class model{
     
     eat(next) {
         this.score++
+        let score = document.getElementById('score')
+        score.innerHTML = this.score
         this.snake.unshift(next)
         this.feed()
     }

@@ -3,7 +3,7 @@ import Chain from '../utils/Chain'
 
 export default class View {
     constructor() {
-        this.app = PIXI.autoDetectRenderer(550, 550, 
+        this.app = PIXI.autoDetectRenderer(308, 308, 
             { 
 				transparent: true
 			}
@@ -46,10 +46,8 @@ export default class View {
     drawBound() {
         let bound = (new PIXI.Graphics())
             .beginFill(0xffffff, 1)
-            .lineStyle(8, this.config.bound, 1)
-            .drawRect(0, 0, this.config.width + 8, this.config.height + 8)
-            .endFill()
-        bound.x = bound.y = (this.app.view.width - bound.cwidth) / 2
+                .lineStyle(8, this.config.bound, 1)
+                    .drawRect(0, 0, this.config.width + 8, this.config.height + 8)
         this.stage.addChild(bound)
     }
 

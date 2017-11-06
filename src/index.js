@@ -1,14 +1,14 @@
 import Controller from './controller/controller'
 import './style/style.css'
 let config = {
-    width: 500,
-    height: 500,
+    width: 300,
+    height: 300,
     column: 20,
     row: 20,
-    min: 8,
-    color: 0xFFC3DC,
-    bound: 0xFF66A5,
-    food: 0xFF2424
+    min: 4,
+    color: 0x55A7DD,
+    bound: 0x75AFCC,
+    food: 0xDD1114
 }
 
 let controller = new Controller()

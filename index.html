@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Greedy Snake</title>
+</head>
+
+<body>
+    <div id='snake-game'></div>
+    <div class='snake-direction'>
+        <div class='snake-up'></div>
+        <div class='snake-middle'>
+            <div class='snake-left'></div><div class='snake-right'></div>
+        </div>
+        <div class='snake-down'></div>
+        
+    </div>
+    <button class='snake-trigger snake-btn'></button>
+    <button class='snake-start snake-btn'></button>
+    <p class='snake-score'>得分：<span id='score'>0</span></p>
+<script type="text/javascript" src="dist/bundle.js"></script></body>
+<script>
+    (function(doc) {
+      var clientWidth = doc.documentElement.clientWidth || window.innerWidth;
+      clientWidth = clientWidth > 750 ? 750 : clientWidth;
+      var rem = clientWidth / 750 * 100;
+      if (rem < 50) {
+        rem = 50
+      } else if (rem > 75) {
+        rem = 75
+      }
+      doc.querySelector('html').style.fontSize = rem + 'px';
+    })(document);
+</script>
+</html>

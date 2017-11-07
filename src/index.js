@@ -1,5 +1,6 @@
 import Controller from './controller/controller'
 import './style/style.css'
+import './style/font-awesome-4.7.0/css/font-awesome.min.css'
 let config = {
     width: 300,
     height: 300,
@@ -34,5 +35,18 @@ document.querySelector('.snake-trigger').addEventListener("click", () => {
 document.querySelector('.snake-start').addEventListener("click", () => {
     controller.restart()
 })
+
+document.onkeydown = function (event) {
+    var e = event || window.event || arguments.callee.caller.arguments[0];
+    if (e && e.keyCode == 38) { 
+        controller.turn('up')
+    } else if (e && e.keyCode == 39) { 
+        controller.turn('right')
+    } else if (e && e.keyCode == 40) { 
+        controller.turn('down')
+    } else if (e && e.keyCode == 37) { 
+        controller.turn('left')
+    }
+}; 
 
 

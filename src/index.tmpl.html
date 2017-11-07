@@ -10,15 +10,23 @@
 <body>
     <div id='snake-game'></div>
     <div class='snake-direction'>
-        <div class='snake-up'></div>
+        <button class='snake-up'>
+            <i class='fa fa-caret-up'></i>
+        </button>
         <div class='snake-middle'>
-            <div class='snake-left'></div><div class='snake-right'></div>
+            <button class='snake-left'>
+                <i class='fa fa-caret-left'></i>    
+            </button><button class='snake-right'><i class='fa fa-caret-right'></i></button>
         </div>
-        <div class='snake-down'></div>
+        <button class='snake-down'><i class='fa fa-caret-down'></i></button>
         
     </div>
-    <button class='snake-trigger snake-btn'></button>
-    <button class='snake-start snake-btn'></button>
+    <button class='snake-trigger snake-btn'>
+        <i class="fa fa-pause" ></i>
+    </button>
+    <button class='snake-start snake-btn'>
+        <i class="fa fa-undo"></i>
+    </button>
     <p class='snake-score'>得分：<span id='score'>0</span></p>
 </body>
 <script>

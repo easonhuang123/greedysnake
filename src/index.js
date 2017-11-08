@@ -1,6 +1,6 @@
 import Controller from './controller/controller'
 import './style/style.css'
-import './style/font-awesome-4.7.0/css/font-awesome.min.css'
+import 'font-awesome-webpack'
 let config = {
     width: 300,
     height: 300,
